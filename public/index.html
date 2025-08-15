@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp API Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="inbox-styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                <h1>WhatsApp API</h1>
+            </div>
+            <nav class="nav-menu">
+                <!-- Core Dashboard -->
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <!-- Individual Message Types -->
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" data-section="send-message">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send Message</span>
+                </a>
+                <a href="#" class="nav-item" data-section="send-media">
+                    <i class="fas fa-image"></i>
+                    <span>Send Media</span>
+                </a>
+                <a href="#" class="nav-item" data-section="send-document">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Send Document</span>
+                </a>
+                
+                <!-- Interactive Messages -->
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" data-section="send-list">
+                    <i class="fas fa-list"></i>
+                    <span>Send List</span>
+                </a>
+                <a href="#" class="nav-item" data-section="send-buttons">
+                    <i class="fas fa-square"></i>
+                    <span>Send Buttons</span>
+                </a>
+                
+                <!-- Bulk Operations -->
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" data-section="bulk-messages">
+                    <i class="fas fa-users"></i>
+                    <span>Bulk Messages</span>
+                </a>
+                <a href="#" class="nav-item" data-section="bulk-templates">
+                    <i class="fas fa-clone"></i>
+                    <span>Bulk Templates</span>
+                </a>
+                
+                <!-- Advanced Features -->
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" data-section="chatbot">
+                    <i class="fas fa-robot"></i>
+                    <span>Chatbot</span>
+                </a>
+                <a href="#" class="nav-item" data-section="inbox">
+                    <i class="fas fa-inbox"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="#" class="nav-item" data-section="api-endpoints">
+                    <i class="fas fa-code"></i>
+                    <span>API Endpoints</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="connection-status">
+                    <div class="status-indicator offline">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Disconnected</span>
+                    </div>
+                    <div id="connected-user" class="connected-user" style="display:flex; align-items:center; gap:12px; margin:10px 0;">
+                        <img id="connected-user-avatar" alt="User Avatar" style="width:44px; height:44px; border-radius:50%; object-fit:cover; background:#eee; display:none;" />
+                        <div style="display:flex; flex-direction:column;">
+                            <span id="connected-user-name" style="font-weight:600;"></span>
+                            <span id="connected-user-phone" style="font-size:12px; color:#666;"></span>
+                        </div>
+                    </div>
+                <!-- Generic JSON Preview Modal -->
+                <div id="json-preview-modal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>JSON Preview</h3>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <pre id="modal-json-full" class="json-preview" style="max-height: 60vh;"></pre>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline" id="modal-copy-json">Copy</button>
+                            <button class="btn btn-primary" data-close-modal>Close</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="user-actions">
+                    <div class="theme-switch-container">
+                        <i class="fas fa-sun"></i>
+                        <label class="switch">
+                            <input type="checkbox" id="theme-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <button class="btn btn-outline" id="refresh-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Refresh</span>
+                    </button>
+                    <button class="btn btn-outline" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <section class="content-section active" id="dashboard">
+                    <div class="section-header">
+                        <h2>Dashboard</h2>
+                    </div>
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Messages Sent <i class="fas fa-trash clear-stat" id="clear-messages" style="cursor: pointer; font-size: 0.8em; color: #888; margin-left: 5px;"></i></h3>
+                                <p class="stat-value" id="messages-count">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Media Sent <i class="fas fa-trash clear-stat" id="clear-media" style="cursor: pointer; font-size: 0.8em; color: #888; margin-left: 5px;"></i></h3>
+                                <p class="stat-value" id="media-count">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Documents Sent <i class="fas fa-trash clear-stat" id="clear-docs" style="cursor: pointer; font-size: 0.8em; color: #888; margin-left: 5px;"></i></h3>
+                                <p class="stat-value" id="docs-count">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="qr-container">
+                        <div class="qr-card">
+                            <h3>Scan QR Code to Connect</h3>
+                            <div class="qr-placeholder" id="qr-code">
+                                <i class="fas fa-qrcode"></i>
+                                <p>Waiting for QR code...</p>
+                            </div>
+                        </div>
+                        <div class="connection-info">
+                            <h3>Connection Status</h3>
+                            <div class="status-log" id="status-log">
+                                <div class="log-entry">
+                                    <span class="log-time">System</span>
+                                    <span class="log-message">Waiting for WhatsApp connection...</span>
+                                </div>
+                            </div>
+                            <!-- Profile Picture Lookup -->
+                            <div class="profile-picture-lookup" style="margin-top:16px; padding-top:12px; border-top:1px solid #eee;">
+                                <h4 style="margin:0 0 8px 0;">Lookup Profile Picture</h4>
+                                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                                    <input type="text" id="pp-phone-input" placeholder="Phone with country code (e.g., 923001234567)" style="flex:1 1 260px; min-width:220px; padding:8px;" />
+                                    <button class="btn btn-outline" id="pp-fetch-btn">
+                                        <i class="fas fa-search"></i>
+                                        <span>Fetch</span>
+                                    </button>
+                                </div>
+                                <div style="margin-top:10px; display:flex; align-items:center; gap:12px;">
+                                    <img id="pp-result-img" alt="Profile Picture" style="width:60px; height:60px; border-radius:50%; object-fit:cover; background:#eee; display:none;" />
+                                    <a id="pp-result-url" href="#" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#1a73e8; word-break:break-all; text-decoration:underline;"></a>
+                                </div>
+                            </div>
+                        </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function(){
+                            try {
+                                var base = window.location.origin || 'http://localhost:3000';
+                                var baseEl = document.getElementById('base-url');
+                                if (baseEl) baseEl.textContent = base;
+                                var section = document.getElementById('api-endpoints');
+                                if (!section) return;
+                                var pres = section.querySelectorAll('pre');
+                                // Replace any absolute origin (protocol+host+port) with current origin
+                                var originRegex = /https?:\/\/[A-Za-z0-9_.:-]+/g;
+                                pres.forEach(function(pre){
+                                    pre.textContent = pre.textContent.replace(originRegex, base);
+                                });
+                            } catch (e) { /* noop */ }
+                        });
+                        </script>
+                    </div>
+                </section>
+
+                <!-- Chatbot (FAQs) Section -->
+                <section class="content-section" id="chatbot">
+                    <div class="section-header">
+                        <h2>Chatbot FAQs</h2>
+                    </div>
+                    <div class="bulk-layout" style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+                        <div class="form-container" style="flex:1 1 420px; min-width:320px; align-self:flex-start; margin-top:0; position:sticky; top:20px; max-height:calc(100vh - 120px); overflow-y:auto;">
+                            <form id="faq-form" novalidate>
+                                <p style="margin:4px 0 12px 0; color:#666; font-size:12px;">Note: This UI saves to server endpoints <code>/faqs</code> and <code>/faqs/:idx</code> if available; otherwise it keeps changes locally (browser only).</p>
+                                <div class="form-group">
+                                    <label for="faq-question">Question</label>
+                                    <input type="text" id="faq-question" placeholder="Enter question" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="faq-answer">Answer</label>
+                                    <textarea id="faq-answer" placeholder="Enter answer" rows="4" required></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary" id="add-faq-btn">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add FAQ</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline" id="reload-faqs-btn" style="margin-left:8px;">
+                                        <i class="fas fa-rotate"></i>
+                                        <span>Reload</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="table-responsive" style="flex:2 1 520px; min-width:340px; align-self:flex-start; margin-top:0; max-height:calc(100vh - 120px); display:flex; flex-direction:column;">
+                            <div class="table-header">
+                                <h3>FAQs</h3>
+                                <div class="table-actions">
+                                    <div class="input-with-icon" style="min-width:220px;">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="faq-search" placeholder="Search FAQs">
+                                    </div>
+                                    <span id="faqs-count" class="count-badge"></span>
+                                </div>
+                            </div>
+                            <div class="table-responsive" style="flex:1; overflow-y:auto;">
+                            <table id="faqs-table" class="contacts-table">
+                                <thead>
+                                    <tr>
+                                            <th style="width:56px;" data-sort="index" class="sortable">#</th>
+                                            <th data-sort="question" class="sortable">Question</th>
+                                            <th data-sort="answer" class="sortable">Answer</th>
+                                            <th style="width:200px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </section>
+
+                <!-- Inbox Section -->
+                <section class="content-section" id="inbox">
+                    <div class="section-header">
+                        <h2>WhatsApp Inbox</h2>
+                    </div>
+                    <div class="inbox-container">
+                        <div class="inbox-header">
+                            <div class="inbox-title">
+                                <i class="fas fa-inbox"></i>
+                                <h2>Messages</h2>
+                            </div>
+                            <div class="inbox-controls">
+                                <select class="owner-select" id="owner-select">
+                                    <option value="">Select Owner</option>
+                                </select>
+                                <button class="refresh-btn" id="refresh-inbox-btn">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span>Refresh</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="inbox-body">
+                            <div class="contacts-panel">
+                                <div class="contacts-header">
+                                    <div class="search-box">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="contact-search" placeholder="Search or start new chat">
+                                    </div>
+                                </div>
+                                <div class="contacts-list" id="contacts-list">
+                                    <!-- Contacts will be loaded here -->
+                                </div>
+                            </div>
+                            <div class="chat-panel" id="chat-panel">
+                                <div class="chat-header">
+                                    <div class="chat-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="chat-info">
+                                        <h3 id="chat-contact-name">Select a contact</h3>
+                                        <span id="chat-contact-status"></span>
+                                    </div>
+                                </div>
+                                <div class="chat-messages" id="chat-messages">
+                                    <div class="welcome-message">
+                                        <i class="fas fa-comments"></i>
+                                        <h3>Welcome to WhatsApp Inbox</h3>
+                                        <p>Select a conversation to start messaging</p>
+                                    </div>
+                                </div>
+                                <div class="chat-input">
+                                    <input type="text" id="message-input" placeholder="Type a message...">
+                                    <button id="send-message-btn"><i class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- API Endpoints Section -->
+                <section class="content-section" id="api-endpoints">
+                    <div class="section-header">
+                        <h2>API Endpoints</h2>
+                        <p class="section-description">Complete API documentation with interactive examples</p>
+                    </div>
+                    <div class="api-container">
+                        <div class="api-header">
+                            <div class="base-url-container">
+                                <i class="fas fa-link"></i>
+                                <span>Base URL:</span>
+                                <code id="base-url">http://localhost:3000</code>
+                                <button class="btn btn-sm btn-outline" id="copy-base-url">
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copy</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="api-endpoints-grid">
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="send-message">
+                                    <div class="endpoint-info">
+                                        <span class="method post">POST</span>
+                                        <span class="path">/send-message</span>
+                                        <span class="title">Send Text Message</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Send a text message to a WhatsApp number</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe -X POST http://localhost:3000/send-message \
+  -H "Content-Type: application/json" \
+  -d '{
+    "number": "923001234567",
+    "message": "Hello from API"
+  }'</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe -X POST http://localhost:3000/send-message -H "Content-Type: application/json" -d "{\"number\":\"923001234567\",\"message\":\"Hello from API\"}"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="upload-media">
+                                    <div class="endpoint-info">
+                                        <span class="method post">POST</span>
+                                        <span class="path">/upload-media</span>
+                                        <span class="title">Upload Image</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Upload an image file to the server</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe -X POST http://localhost:3000/upload-media \
+  -F "file=@./image.jpg"</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe -X POST http://localhost:3000/upload-media -F "file=@./image.jpg"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="send-media">
+                                    <div class="endpoint-info">
+                                        <span class="method post">POST</span>
+                                        <span class="path">/send-media</span>
+                                        <span class="title">Send Media</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Send media using path from upload-media</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe -X POST http://localhost:3000/send-media \
+  -H "Content-Type: application/json" \
+  -d '{
+    "number": "923001234567",
+    "file": "uploads/1723530000000_image.jpg",
+    "caption": "Sample image"
+  }'</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe -X POST http://localhost:3000/send-media -H "Content-Type: application/json" -d "{\"number\":\"923001234567\",\"file\":\"uploads/1723530000000_image.jpg\",\"caption\":\"Sample image\"}"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="upload-doc">
+                                    <div class="endpoint-info">
+                                        <span class="method post">POST</span>
+                                        <span class="path">/upload-doc</span>
+                                        <span class="title">Upload Document</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Upload a document file to the server</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe -X POST http://localhost:3000/upload-doc \
+  -F "file=@./document.pdf"</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe -X POST http://localhost:3000/upload-doc -F "file=@./document.pdf"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="sendfile">
+                                    <div class="endpoint-info">
+                                        <span class="method post">POST</span>
+                                        <span class="path">/sendfile</span>
+                                        <span class="title">Send Document</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Send document using path from upload-doc</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe -X POST http://localhost:3000/sendfile \
+  -H "Content-Type: application/json" \
+  -d '{
+    "number": "923001234567",
+    "file": "uploads/1723530000000_document.pdf",
+    "caption": "Here is your file"
+  }'</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe -X POST http://localhost:3000/sendfile -H "Content-Type: application/json" -d "{\"number\":\"923001234567\",\"file\":\"uploads/1723530000000_document.pdf\",\"caption\":\"Here is your file\"}"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="parse-excel">
+                                    <div class="endpoint-info">
+                                        <span class="method post">POST</span>
+                                        <span class="path">/parse-excel</span>
+                                        <span class="title">Parse Excel/CSV</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Parse Excel/CSV file for phone numbers</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe -X POST http://localhost:3000/parse-excel \
+  -F "colIndex=0" \
+  -F "file=@./contacts.xlsx"</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe -X POST http://localhost:3000/parse-excel -F "colIndex=0" -F "file=@./contacts.xlsx"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="sendlists">
+                                    <div class="endpoint-info">
+                                        <span class="method post">POST</span>
+                                        <span class="path">/sendlists</span>
+                                        <span class="title">Send List</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Send interactive list menu</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe -X POST http://localhost:3000/sendlists \
+  -H "Content-Type: application/json" \
+  -d '{
+    "number": "923001234567",
+    "text": "Choose an option",
+    "title": "Menu",
+    "buttonText": "View Options",
+    "footer": "Powered by API",
+    "sections": [{
+      "title": "Section 1",
+      "rows": [{
+        "title": "Option A",
+        "description": "First option",
+        "rowId": "opt_a"
+      }, {
+        "title": "Option B",
+        "description": "Second option",
+        "rowId": "opt_b"
+      }]
+    }]
+  }'</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe -X POST http://localhost:3000/sendlists -H "Content-Type: application/json" -d "{\"number\":\"923001234567\",\"text\":\"Choose an option\",\"title\":\"Menu\",\"buttonText\":\"View Options\",\"footer\":\"Powered by API\",\"sections\":[{\"title\":\"Section 1\",\"rows\":[{\"title\":\"Option A\",\"description\":\"First option\",\"rowId\":\"opt_a\"},{\"title\":\"Option B\",\"description\":\"Second option\",\"rowId\":\"opt_b\"}]}]}"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="sendbuttons">
+                                    <div class="endpoint-info">
+                                        <span class="method post">POST</span>
+                                        <span class="path">/sendbuttons</span>
+                                        <span class="title">Send Buttons</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Send interactive buttons</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe -X POST http://localhost:3000/sendbuttons \
+  -H "Content-Type: application/json" \
+  -d '{
+    "number": "923001234567",
+    "text": "Pick an action",
+    "title": "Actions",
+    "footer": "Footer",
+    "buttons": [{
+      "type": "quick_reply",
+      "text": "👍 Like",
+      "id": "like"
+    }, {
+      "type": "cta_url",
+      "text": "Open Site",
+      "url": "https://example.com"
+    }]
+  }'</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe -X POST http://localhost:3000/sendbuttons -H "Content-Type: application/json" -d "{\"number\":\"923001234567\",\"text\":\"Pick an action\",\"title\":\"Actions\",\"footer\":\"Footer\",\"buttons\":[{\"type\":\"quick_reply\",\"text\":\"👍 Like\",\"id\":\"like\"},{\"type\":\"cta_url\",\"text\":\"Open Site\",\"url\":\"https://example.com\"}]}"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="logout">
+                                    <div class="endpoint-info">
+                                        <span class="method get">GET</span>
+                                        <span class="path">/logout</span>
+                                        <span class="title">Logout</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Logout from WhatsApp session</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe http://localhost:3000/logout</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe http://localhost:3000/logout</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-endpoint-card">
+                                <div class="endpoint-header" data-endpoint="profile-picture">
+                                    <div class="endpoint-info">
+                                        <span class="method get">GET</span>
+                                        <span class="path">/profile-picture</span>
+                                        <span class="title">Profile Picture</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                                <div class="endpoint-content">
+                                    <div class="endpoint-description">
+                                        <p>Get profile picture for a phone number</p>
+                                    </div>
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <div class="tabs">
+                                                <button class="tab-btn active" data-tab="curl">cURL Example</button>
+                                                <button class="tab-btn" data-tab="cmd">PostZap</button>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline copy-btn">
+                                                <i class="fas fa-copy"></i>
+                                                <span>Copy</span>
+                                            </button>
+                                        </div>
+                                        <pre class="code-block active" data-tab="curl">curl.exe "http://localhost:3000/profile-picture?phone=923001234567"</pre>
+                                        <pre class="code-block" data-tab="cmd">curl.exe "http://localhost:3000/profile-picture?phone=923001234567"</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="websocket-info">
+                            <h3>WebSocket Connection</h3>
+                        <p>Connect to <code>ws://localhost:3000/ws</code> to receive QR and status events.</p>
+                        </div>
+                    </div>
+                </section>
+                    </div>
+                </section>
+
+                <!-- Bulk Templates Section -->
+                <section class="content-section" id="bulk-templates">
+                    <div class="section-header">
+                        <h2>Bulk Templates</h2>
+                    </div>
+                    <div class="bulk-layout" style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+                        <div class="form-container" style="flex:1 1 420px; min-width:320px; align-self:flex-start; margin-top:0;">
+                            <form id="bulk-tpl-form" novalidate>
+                                <div class="form-group">
+                                    <label for="excel-file-tpl">Excel/CSV File with Phone Numbers</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="excel-file-tpl" name="excelFileTpl" accept=".xlsx,.xls,.csv" required>
+                                        <label for="excel-file-tpl" class="file-label">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Choose Excel/CSV file</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group half-width">
+                                        <label for="country-code-tpl">Country Code</label>
+                                        <input type="text" id="country-code-tpl" name="countryCodeTpl" value="92" required>
+                                    </div>
+                                    <div class="form-group half-width">
+                                        <label for="message-delay-tpl">Pause (seconds)</label>
+                                        <input type="number" id="message-delay-tpl" name="messageDelayTpl" min="1" value="20" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group half-width">
+                                        <label for="template-kind">Type</label>
+                                        <select id="template-kind" name="templateKind" class="ui-combobox">
+                                            <option value="lists">Lists</option>
+                                            <option value="buttons">Buttons</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group half-width">
+                                        <label for="template-name-select">Template</label>
+                                        <select id="template-name-select" name="templateName" class="ui-combobox"></select>
+                                    </div>
+                                </div>
+                                <!-- Optional Image for Buttons (shown only when Type=Buttons) -->
+                                <div class="form-group" id="buttons-image-tpl-wrap" style="display:none;">
+                                    <label for="buttons-image-tpl">Optional Image (to send with buttons)</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="buttons-image-tpl" accept="image/*">
+                                        <label for="buttons-image-tpl" class="file-label">
+                                            <i class="fas fa-image"></i>
+                                            <span>Choose Image</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- Readonly JSON preview for selected template -->
+                                <div class="form-group">
+                                    <!-- <label for="bulk-template-json">Selected Template JSON (read-only)</label> -->
+                                    <!--<pre id="bulk-template-json" class="json-preview" style="max-height: 220px; overflow:auto;">Select a template to preview...</pre> -->
+                                    <!-- Hidden field to include JSON payload in regular form POST -->
+                                    <input type="hidden" id="bulk-template-json-input" name="bulkTemplateJson" value="">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane"></i>
+                                        <span>Send Bulk Templates</span>
+                                    </button>
+                                    <button type="reset" class="btn btn-outline">
+                                        <i class="fas fa-times"></i>
+                                        <span>Clear</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="contacts-table-container-tpl" class="contacts-table-container hidden" style="flex:1 1 420px; min-width:320px; align-self:flex-start; margin-top:0;">
+                            <div class="table-header">
+                                <h3>Contacts List</h3>
+                                <div class="table-actions">
+                                    <label class="btn btn-sm btn-outline" style="display:inline-flex; align-items:center; gap:6px;">
+                                        <input type="checkbox" id="dedupe-contacts-tpl" style="margin:0;">
+                                        <span>Remove duplicates</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="contacts-table-tpl" class="contacts-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Phone Number</th>
+                                            <th>Formatted Number</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="contacts-table-body-tpl"></tbody>
+                                </table>
+                            </div>
+
+                            <div class="bulk-progress hidden" id="bulk-progress-tpl">
+                                <h3>Sending Progress</h3>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="progress-bar-tpl"></div>
+                                </div>
+                                <div class="progress-stats">
+                                    <span id="progress-text-tpl">0/0 messages sent</span>
+                                </div>
+                                <div class="progress-controls">
+                                    <button id="pause-resume-btn-tpl" class="btn btn-warning">
+                                        <i class="fas fa-pause"></i>
+                                        <span>Pause</span>
+                                    </button>
+                                    <button id="abort-btn-tpl" class="btn btn-danger">
+                                        <i class="fas fa-stop"></i>
+                                        <span>Abort</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Modals -->
+                <div id="modal-backdrop" class="modal-backdrop" style="display:none;"></div>
+                <!-- Template Name Modal (moved here to share stacking context with backdrop) -->
+                <div id="template-name-modal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Save Template</h3>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-row">
+                                <label style="min-width:120px;">Template name</label>
+                                <input type="text" id="modal-template-name" placeholder="e.g., Welcome Menu" />
+                            </div>
+                            <p style="margin:0; color: var(--text-light);">This name will appear in the Templates dropdown.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline" data-close-modal>Cancel</button>
+                            <button class="btn btn-primary" id="modal-template-save-confirm">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="list-builder-modal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>List Builder</h3>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-row">
+                                <input type="text" id="modal-row-title" placeholder="Row Title" />
+                                <input type="text" id="modal-row-desc" placeholder="Row Description (optional)" />
+                                <button class="btn btn-outline" id="modal-add-row"><i class="fas fa-plus"></i><span>Add Row</span></button>
+                            </div>
+                            <pre id="modal-list-preview" class="json-preview"></pre>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="modal-apply-list">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="buttons-builder-modal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Buttons Builder</h3>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-row">
+                                <label style="min-width:90px;">Action</label>
+                                <select id="modal-button-action">
+                                    <option value="quick_reply">quick_reply</option>
+                                    <option value="cta_call">cta_call</option>
+                                    <option value="cta_url">cta_url</option>
+                                    <option value="cta_copy">cta_copy</option>
+                                </select>
+                            </div>
+                            <div class="modal-row">
+                                <input type="text" id="modal-button-text" placeholder="Display text (e.g., 👍 Like)" />
+                            </div>
+                            <div class="modal-row" id="action-fields-quick_reply">
+                                <input type="text" id="modal-button-id" placeholder="Reply ID (e.g., img_like)" />
+                            </div>
+                            <div class="modal-row" id="action-fields-cta_call" style="display:none;">
+                                <input type="text" id="modal-button-phone" placeholder="Phone number (e.g., +1234567890)" />
+                            </div>
+                            <div class="modal-row" id="action-fields-cta_url" style="display:none;">
+                                <input type="url" id="modal-button-url" placeholder="URL (https://example.com)" />
+                                <input type="url" id="modal-button-merchant" placeholder="Merchant URL (optional)" />
+                            </div>
+                            <div class="modal-row" id="action-fields-cta_copy" style="display:none;">
+                                <input type="text" id="modal-button-copy" placeholder="Copy code / text" />
+                            </div>
+                            <div class="modal-row">
+                                <button class="btn btn-outline" id="modal-add-button"><i class="fas fa-plus-circle"></i><span>Add Button</span></button>
+                                <button class="btn btn-outline" id="modal-clear-buttons"><i class="fas fa-trash"></i><span>Clear</span></button>
+                            </div>
+                            <pre id="modal-buttons-preview" class="json-preview"></pre>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="modal-apply-buttons">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Send List Section -->
+                <section class="content-section" id="send-list">
+                    <div class="section-header">
+                        <h2>Send List</h2>
+                    </div>
+                    <div class="form-container">
+                        <form id="list-form">
+                            <div class="modal-row" style="justify-content: space-between; align-items:center;">
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    <label style="min-width:90px;">Templates</label>
+                                    <select id="list-template-select" class="ui-combobox"></select>
+                                </div>
+                                <div style="display:flex; gap:8px;">
+                                    <button type="button" class="btn btn-outline" id="list-template-save">Save</button>
+                                    <button type="button" class="btn btn-outline" id="list-template-load">Load</button>
+                                    <button type="button" class="btn btn-outline" id="list-template-delete">Delete</button>
+                                    <button type="button" class="btn btn-outline" id="list-template-export">Export</button>
+                                    <button type="button" class="btn btn-outline" id="list-template-import">Import</button>
+                                    <input type="file" id="list-template-file" accept="application/json" style="display:none;" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="list-phone-number">Phone Number</label>
+                                <div class="input-with-icon">
+                                    <input type="text" id="list-phone-number" placeholder="Phone number with country code" required>
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                    <label for="list-title">Title</label>
+                                    <input type="text" id="list-title" placeholder="Menu" value="Menu">
+                                </div>
+                                <div class="form-group half-width">
+                                    <label for="list-button-text">Button Text</label>
+                                    <input type="text" id="list-button-text" placeholder="View Options" value="View Options">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="list-text">Introductory Text (optional)</label>
+                                <input type="text" id="list-text" placeholder="Optional message">
+                            </div>
+                            <div class="form-group">
+                                <label for="list-footer">Footer (optional)</label>
+                                <input type="text" id="list-footer" placeholder="Optional footer">
+                            </div>
+                            <div class="form-group">
+                                <label for="list-sections">Sections (JSON)</label>
+                                <div class="builder-actions">
+                                    <button type="button" class="btn btn-outline" id="open-list-builder-btn"><i class="fas fa-list"></i><span>Open Builder</span></button>
+                                    <label for="list-sections"></label>
+                                </div>
+                                <textarea id="list-sections" rows="6" placeholder='[{"title":"Section 1","rows":[{"id":"opt1","title":"Option 1","description":"desc"}]}]'></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Send List</span>
+                                </button>
+                                <button type="reset" class="btn btn-outline">
+                                    <i class="fas fa-times"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Send Buttons Section -->
+                <section class="content-section" id="send-buttons">
+                    <div class="section-header">
+                        <h2>Send Buttons</h2>
+                    </div>
+                    <div class="form-container">
+                        <form id="buttons-form">
+                            <div class="modal-row" style="justify-content: space-between; align-items:center;">
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    <label style="min-width:90px;">Templates</label>
+                                    <select id="buttons-template-select" class="ui-combobox"></select>
+                                </div>
+                                <div style="display:flex; gap:8px;">
+                                    <button type="button" class="btn btn-outline" id="buttons-template-save">Save</button>
+                                    <button type="button" class="btn btn-outline" id="buttons-template-load">Load</button>
+                                    <button type="button" class="btn btn-outline" id="buttons-template-delete">Delete</button>
+                                    <button type="button" class="btn btn-outline" id="buttons-template-export">Export</button>
+                                    <button type="button" class="btn btn-outline" id="buttons-template-import">Import</button>
+                                    <input type="file" id="buttons-template-file" accept="application/json" style="display:none;" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="buttons-phone-number">Phone Number</label>
+                                <div class="input-with-icon">
+                                    <input type="text" id="buttons-phone-number" placeholder="Phone number with country code" required>
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="buttons-text">Text</label>
+                                <input type="text" id="buttons-text" placeholder="Message text" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                    <label for="buttons-title">Title (optional)</label>
+                                    <input type="text" id="buttons-title" placeholder="Title">
+                                </div>
+                                <div class="form-group half-width">
+                                    <label for="buttons-footer">Footer (optional)</label>
+                                    <input type="text" id="buttons-footer" placeholder="Footer">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="buttons-image">Optional Image (to send with buttons)</label>
+                                <div class="file-upload">
+                                    <input type="file" id="buttons-image" accept="image/*">
+                                    <label for="buttons-image" class="file-label">
+                                        <i class="fas fa-image"></i>
+                                        <span>Choose Image</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="buttons-json">Buttons (JSON)</label>
+                                <div class="builder-actions">
+                                    <button type="button" class="btn btn-outline" id="open-buttons-builder-btn"><i class="fas fa-square"></i><span>Open Builder</span></button>
+                                    <label for="buttons-json"></label>
+                                </div>
+                                <textarea id="buttons-json" rows="6" placeholder='[{"type":"reply","reply":{"id":"id1","title":"Button 1"}}]'></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Send Buttons</span>
+                                </button>
+                                <button type="reset" class="btn btn-outline">
+                                    <i class="fas fa-times"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Send Message Section -->
+                <section class="content-section" id="send-message">
+                    <div class="section-header">
+                        <h2>Send Message</h2>
+                    </div>
+                    <div class="form-container">
+                        <form id="message-form">
+                            <div class="form-group">
+                                <label for="phone-number">Phone Number</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-phone"></i>
+                                    <input type="text" id="phone-number" placeholder="Phone number with country code (e.g., 1234567890)" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text">Message</label>
+                                <textarea id="message-text" rows="5" placeholder="Type your message here..." required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Send Message</span>
+                                </button>
+                                <button type="reset" class="btn btn-outline">
+                                    <i class="fas fa-times"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Send Media Section -->
+                <section class="content-section" id="send-media">
+                    <div class="section-header">
+                        <h2>Send Media</h2>
+                    </div>
+                    <div class="form-container">
+                        <form id="media-form">
+                            <div class="form-group">
+                                <label for="media-phone-number">Phone Number</label>
+                                <div class="input-with-icon">
+                                    <input type="text" id="media-phone-number" placeholder="Phone number with country code (e.g., 1234567890)" required>
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="media-file">Image File</label>
+                                <div class="file-upload">
+                                    <input type="file" id="media-file" accept="image/*" required>
+                                    <label for="media-file" class="file-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Choose an image file</span>
+                                    </label>
+                                    <div class="file-preview" id="media-preview"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="media-caption">Caption (Optional)</label>
+                                <textarea id="media-caption" rows="3" placeholder="Add a caption to your image..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-image"></i>
+                                    <span>Send Media</span>
+                                </button>
+                                <button type="reset" class="btn btn-outline">
+                                    <i class="fas fa-times"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Send Document Section -->
+                <section class="content-section" id="send-document">
+                    <div class="section-header">
+                        <h2>Send Document</h2>
+                    </div>
+                    <div class="form-container">
+                        <form id="document-form">
+                            <div class="form-group">
+                                <label for="doc-phone-number">Phone Number</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-phone"></i>
+                                    <input type="text" id="doc-phone-number" placeholder="Phone number with country code (e.g., 1234567890)" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="doc-file">Document File</label>
+                                <div class="file-upload">
+                                    <input type="file" id="doc-file" required>
+                                    <label for="doc-file" class="file-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Choose a document file</span>
+                                    </label>
+                                    <div class="file-info" id="doc-info"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="doc-caption">Caption (Optional)</label>
+                                <textarea id="doc-caption" rows="3" placeholder="Add a caption to your document..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Send Document</span>
+                                </button>
+                                <button type="reset" class="btn btn-outline">
+                                    <i class="fas fa-times"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Bulk Messages Section -->
+                <section class="content-section" id="bulk-messages">
+                    <div class="section-header">
+                        <h2>Bulk Messages</h2>
+                    </div>
+                    <div class="bulk-layout" style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+                        <div class="form-container" style="flex:1 1 420px; min-width:320px; align-self:flex-start; margin-top:0;">
+                        <form id="bulk-form">
+                            <div class="form-group">
+                                <label for="excel-file">Excel/CSV File with Phone Numbers</label>
+                                <div class="file-upload">
+                                    <input type="file" id="excel-file" accept=".xlsx,.xls,.csv" required>
+                                    <label for="excel-file" class="file-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Choose Excel/CSV file</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                    <label for="country-code">Country Code</label>
+                                    <input type="text" id="country-code" value="92" required>
+                                </div>
+                                <div class="form-group half-width">
+                                    <label for="message-delay">Pause (seconds)</label>
+                                    <input type="number" id="message-delay" min="1" value="20" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                <label for="bulk-media-file">Optional Media (image)</label>
+                                <div class="file-upload">
+                                    <input type="file" id="bulk-media-file" accept="image/*">
+                                    <label for="bulk-media-file" class="file-label">
+                                        <i class="fas fa-image"></i>
+                                        <span>Choose Image</span>
+                                    </label>
+                                    </div>
+                                    <div id="bulk-media-preview" class="media-preview" style="margin-top:8px;"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bulk-message">Message Template</label>
+                                <textarea id="bulk-message" rows="5" placeholder="Type your message here..." required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Send Bulk Messages</span>
+                                </button>
+                                <button type="reset" class="btn btn-outline">
+                                    <i class="fas fa-times"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </form>
+                        </div>
+                        
+                        <div id="contacts-table-container" class="contacts-table-container hidden" style="flex:1 1 420px; min-width:320px; align-self:flex-start; margin-top:0;">
+                        <div class="table-header">
+                            <h3>Contacts List</h3>
+                            <div class="table-actions">
+                                <label class="btn btn-sm btn-outline" style="display:inline-flex; align-items:center; gap:6px;">
+                                    <input type="checkbox" id="dedupe-contacts" style="margin:0;">
+                                    <span>Remove duplicates</span>
+                                </label>
+                                <button id="export-contacts" class="btn btn-sm btn-outline">
+                                    <i class="fas fa-file-export"></i>
+                                    <span>Export</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="contacts-table" class="contacts-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Phone Number</th>
+                                        <th>Formatted Number</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="contacts-table-body">
+                                    <!-- Contacts will be added here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="bulk-progress hidden" id="bulk-progress">
+                        <h3>Sending Progress</h3>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span id="progress-text">0/0 messages sent</span>
+                        </div>
+                        <div class="progress-controls">
+                            <button id="pause-resume-btn" class="btn btn-warning">
+                                <i class="fas fa-pause"></i>
+                                <span>Pause</span>
+                            </button>
+                            <button id="abort-btn" class="btn btn-danger">
+                                <i class="fas fa-stop"></i>
+                                <span>Abort</span>
+                            </button>
+                        </div>
+                        </div>
+                        </div>
+                    </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="app-footer" style="position:fixed; left:0; right:0; bottom:0; z-index:100; padding:10px 16px; text-align:center; color:#666; border-top:1px solid #eee; background:#fafafa; font-size:12px;">
+        Built by <a href="https://facebook.com/innovatorssoft" target="_blank" rel="noopener">INNOVATORS SOFT</a>
+    </footer>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="src/chatbot.js"></script>
+    <script src="src/inbox.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>

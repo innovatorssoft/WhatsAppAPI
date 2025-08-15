@@ -1,0 +1,30 @@
+{
+  "name": "innovators",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "start": "node api.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "dayjs": "^1.11.13",
+    "dotenv": "^17.2.1",
+    "express": "^4.18.2",
+    "express-validator": "^6.15.0",
+    "fuse.js": "^7.1.0",
+    "https": "^1.0.0",
+    "innovators-bot2": "^1.0.9",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.14.3",
+    "path-to-regexp": "6.2.1",
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0",
+    "ws": "^8.13.0",
+    "winreg": "^1.2.5",
+    "xlsx": "^0.18.5"
+  }
+}

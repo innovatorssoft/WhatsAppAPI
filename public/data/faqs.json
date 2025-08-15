@@ -1,0 +1,346 @@
+[
+  {
+    "question": "more info, information, inf, more, about, what, what is this?, ye kya hy? Aap ka software kis kaam ka hai?",
+    "answer": "Ye ek complete school management solution hai jo admissions, fees, attendance, exams, aur reports automate karta hai."
+  },
+  {
+    "question": "Price kitni hai?",
+    "answer": "Price modules aur features ke hisaab se hoti hai, humse contact karke aap detailed quotation le sakte hain."
+  },
+  {
+    "question": "Mobile app available hai?",
+    "answer": "Ji haan, Android aur iOS dono versions available hain."
+  },
+  {
+    "question": "Demo mil sakta hai?",
+    "answer": "Bilkul, hum aapko free live demo provide karte hain."
+  },
+  {
+    "question": "Software online chal sakta hai?",
+    "answer": "Ji haan, ye cloud based aur offline dono modes me chal sakta hai."
+  },
+  {
+    "question": "Data secure hai?",
+    "answer": "Ji haan, hum data encryption aur regular backups ka use karte hain."
+  },
+  {
+    "question": "Kitne users access le sakte hain?",
+    "answer": "Unlimited users le sakte hain, bas aapke plan par depend karta hai."
+  },
+  {
+    "question": "Fee management kaise hoti hai?",
+    "answer": "Aap fee structures set kar sakte hain, fee collection record kar sakte hain, aur reports generate kar sakte hain."
+  },
+  {
+    "question": "Attendance ka feature hai?",
+    "answer": "Ji haan, teachers aur students dono ke liye attendance module available hai."
+  },
+  {
+    "question": "Result banane ka system hai?",
+    "answer": "Ji haan, aap exams create karke automatic mark sheets aur results generate kar sakte hain."
+  },
+  {
+    "question": "SMS sending ka option hai?",
+    "answer": "Ji haan, aap students aur parents ko SMS send kar sakte hain."
+  },
+  {
+    "question": "WhatsApp notification ka feature hai?",
+    "answer": "Haan, hum WhatsApp notification integration provide karte hain."
+  },
+  {
+    "question": "ID cards banane ka option hai?",
+    "answer": "Haan, aap students ke ID cards design aur print kar sakte hain."
+  },
+  {
+    "question": "Timetable banane ka feature hai?",
+    "answer": "Ji haan, teachers aur classes ke liye timetable create kar sakte hain."
+  },
+  {
+    "question": "Homework assign kar sakte hain?",
+    "answer": "Ji haan, homework module teachers ko assign aur students ko receive karne ka option deta hai."
+  },
+  {
+    "question": "Parent portal available hai?",
+    "answer": "Haan, parents apne bacho ka data, attendance, aur results dekh sakte hain."
+  },
+  {
+    "question": "Teacher portal available hai?",
+    "answer": "Haan, teachers apni classes, attendance, aur homework manage kar sakte hain."
+  },
+  {
+    "question": "Library management ka option hai?",
+    "answer": "Haan, books issue, return, aur fine calculation ke liye module available hai."
+  },
+  {
+    "question": "Transport ka record rakh sakte hain?",
+    "answer": "Haan, buses, routes aur students ki transport details manage hoti hain."
+  },
+  {
+    "question": "Hostel management ka feature hai?",
+    "answer": "Haan, hostel rooms, bed allocation, aur mess management ke liye module hai."
+  },
+  {
+    "question": "Inventory ka record rakhte ho?",
+    "answer": "Ji haan, school ki inventory aur assets ka record maintain hota hai."
+  },
+  {
+    "question": "Examination schedule ban sakta hai?",
+    "answer": "Ji haan, exams schedule aur seat plan banane ka feature hai."
+  },
+  {
+    "question": "Certificate banane ka option hai?",
+    "answer": "Haan, transfer aur leaving certificates generate kar sakte hain."
+  },
+  {
+    "question": "Multi branch support hai?",
+    "answer": "Haan, ek hi software se multiple branches manage kar sakte hain."
+  },
+  {
+    "question": "Online admission form hota hai?",
+    "answer": "Haan, students online apply kar sakte hain."
+  },
+  {
+    "question": "Payroll ka feature hai?",
+    "answer": "Ji haan, teachers aur staff ke liye salary management hota hai."
+  },
+  {
+    "question": "Marks entry ka process kaisa hai?",
+    "answer": "Teachers apne portal se marks enter kar sakte hain jo automatic calculate hote hain."
+  },
+  {
+    "question": "Exam grading customize kar sakte hain?",
+    "answer": "Haan, grading schemes aap khud define kar sakte hain."
+  },
+  {
+    "question": "Report cards automatic ban jati hain?",
+    "answer": "Haan, marks enter karne ke baad report cards automatic ban jati hain."
+  },
+  {
+    "question": "Multiple languages support hota hai?",
+    "answer": "Haan, software multi-language support karta hai."
+  },
+  {
+    "question": "Offline backup ka option hai?",
+    "answer": "Ji haan, aap apne data ka offline backup le sakte hain."
+  },
+  {
+    "question": "Online payment ka feature hai?",
+    "answer": "Haan, students fees online pay kar sakte hain."
+  },
+  {
+    "question": "Custom reports ban sakti hain?",
+    "answer": "Haan, aap apne hisaab se reports design kar sakte hain."
+  },
+  {
+    "question": "Staff attendance ka feature hai?",
+    "answer": "Haan, staff ki attendance record hoti hai."
+  },
+  {
+    "question": "Leave management hota hai?",
+    "answer": "Haan, teachers aur staff ki leaves approve aur track ki ja sakti hain."
+  },
+  {
+    "question": "Security cameras ka integration hai?",
+    "answer": "Optionally, CCTV feed integration possible hai."
+  },
+  {
+    "question": "Software me kaun kaun modules hote hain?",
+    "answer": "Admissions, fees, attendance, exams, library, transport, hostel, payroll, inventory, aur reports."
+  },
+  {
+    "question": "Upgrade ka process kaisa hai?",
+    "answer": "Software updates automatic ya manual diye jate hain."
+  },
+  {
+    "question": "Training provide karte ho?",
+    "answer": "Haan, free online training provide karte hain."
+  },
+  {
+    "question": "Support kaise milti hai?",
+    "answer": "Call, WhatsApp, aur email se support milta hai."
+  },
+  {
+    "question": "Software kis technology me bana hai?",
+    "answer": "Latest web technologies me bana hai jo fast aur secure hai."
+  },
+  {
+    "question": "Minimum requirements kya hain?",
+    "answer": "Normal internet aur basic PC/Android device."
+  },
+  {
+    "question": "Old data import ho sakta hai?",
+    "answer": "Haan, aapka purana data import ho sakta hai."
+  },
+  {
+    "question": "Trial version available hai?",
+    "answer": "Haan, 7 din ka free trial available hai."
+  },
+  {
+    "question": "Software customize ho sakta hai?",
+    "answer": "Haan, aapki zarurat ke mutabiq customize karte hain."
+  },
+  {
+    "question": "Cloud hosting ka option hai?",
+    "answer": "Ji haan, secure cloud hosting available hai."
+  },
+  {
+    "question": "Software ka speed kaisa hai?",
+    "answer": "Optimized performance aur fast response time."
+  },
+  {
+    "question": "Automatic backups hote hain?",
+    "answer": "Haan, daily automatic backups liye jate hain."
+  },
+  {
+    "question": "User rights control kar sakte hain?",
+    "answer": "Haan, har user ke liye alag permissions set hoti hain."
+  },
+  {
+    "question": "Parents ko result kaise milta hai?",
+    "answer": "Parents portal aur WhatsApp/SMS notification se."
+  },
+  {
+    "question": "Fee due notifications aati hain?",
+    "answer": "Haan, automatic due fee reminders send hote hain."
+  },
+  {
+    "question": "Transport fee calculate hoti hai?",
+    "answer": "Haan, route ke hisaab se transport fee calculate hoti hai."
+  },
+  {
+    "question": "Multiple session support hota hai?",
+    "answer": "Haan, academic sessions switch kiye ja sakte hain."
+  },
+  {
+    "question": "Student photo record hota hai?",
+    "answer": "Haan, har student ka profile photo hota hai."
+  },
+  {
+    "question": "Guardian details store hoti hain?",
+    "answer": "Haan, guardian ka contact aur CNIC store hota hai."
+  },
+  {
+    "question": "Discounts set kar sakte hain?",
+    "answer": "Haan, fee discounts set kiye ja sakte hain."
+  },
+  {
+    "question": "Fine calculate hota hai?",
+    "answer": "Haan, late fee fine automatic calculate hota hai."
+  },
+  {
+    "question": "Online classes ka feature hai?",
+    "answer": "Optional, Zoom/Meet integration possible hai."
+  },
+  {
+    "question": "Document upload ka option hai?",
+    "answer": "Haan, student documents upload aur store kar sakte hain."
+  },
+  {
+    "question": "Alumni record hota hai?",
+    "answer": "Haan, pass out students ka record rakha jata hai."
+  },
+  {
+    "question": "Custom certificates ban sakte hain?",
+    "answer": "Haan, aap custom design ke certificates bana sakte hain."
+  },
+  {
+    "question": "Kya software multi language support karta hai?",
+    "answer": "Ji haan, aap apni zarurat ke mutabiq multiple languages enable kar sakte hain."
+  },
+  {
+    "question": "Kya system me automatic updates milte hain?",
+    "answer": "Haan, hum regular automatic updates provide karte hain jisme naye features aur bug fixes hote hain."
+  },
+  {
+    "question": "Kya software offline chal sakta hai?",
+    "answer": "Nahi, ye cloud-based system hai jo internet connection ki zarurat rakhta hai."
+  },
+  {
+    "question": "Kya teacher attendance system me hai?",
+    "answer": "Haan, teacher aur staff attendance ka module available hai."
+  },
+  {
+    "question": "Kya parent portal available hai?",
+    "answer": "Haan, parent portal se parents apne bachon ki performance aur fees details dekh sakte hain."
+  },
+  {
+    "question": "Kya mobile notification system hota hai?",
+    "answer": "Haan, hum push notifications aur SMS alerts provide karte hain."
+  },
+  {
+    "question": "Kya student ID card generate ho sakte hain?",
+    "answer": "Ji haan, system me student ID card design aur print karne ka option hota hai."
+  },
+  {
+    "question": "Kya exam result SMS se bheja ja sakta hai?",
+    "answer": "Haan, result automatically SMS ke zariye parents ko send ho sakta hai."
+  },
+  {
+    "question": "Kya timetable automatic generate hota hai?",
+    "answer": "Haan, timetable generator module available hai jo classes ke mutabiq schedule banata hai."
+  },
+  {
+    "question": "Kya software bulk SMS feature provide karta hai?",
+    "answer": "Haan, aap multiple contacts ko ek saath SMS send kar sakte hain."
+  },
+  {
+    "question": "Kya fees ka reminder automatic send hota hai?",
+    "answer": "Haan, due date se pehle automatic reminder SMS send hota hai."
+  },
+  {
+    "question": "Kya software multi branch support karta hai?",
+    "answer": "Ji haan, multiple branches ka data ek hi system me manage ho sakta hai."
+  },
+  {
+    "question": "Kya online admission form available hai?",
+    "answer": "Haan, students online admission form fill kar sakte hain."
+  },
+  {
+    "question": "Kya software daily homework track karta hai?",
+    "answer": "Haan, homework module se students ke assignments manage hote hain."
+  },
+  {
+    "question": "Kya software ka backup automatic hota hai?",
+    "answer": "Haan, daily automatic cloud backup hota hai."
+  },
+  {
+    "question": "Kya teachers ka performance report banti hai?",
+    "answer": "Haan, teacher evaluation reports generate hoti hain."
+  },
+  {
+    "question": "Kya students ke medical record store ho sakte hain?",
+    "answer": "Ji haan, health record module available hai."
+  },
+  {
+    "question": "Kya event calendar hota hai?",
+    "answer": "Haan, event calendar me school events, holidays, exams sab record hote hain."
+  },
+  {
+    "question": "Kya fee receipts automatic print hoti hain?",
+    "answer": "Haan, payment ke baad automatic receipt generate hoti hai."
+  },
+  {
+    "question": "Kya software customizable hai?",
+    "answer": "Haan, modules aur features customize kiye ja sakte hain."
+  },
+  {
+    "question": "Kya alumni record store hota hai?",
+    "answer": "Haan, pass-out students ka data maintain hota hai."
+  },
+  {
+    "question": "Kya hostel management module available hai?",
+    "answer": "Haan, hostel rooms, occupancy aur fees manage ki ja sakti hai."
+  },
+  {
+    "question": "Kya library management hoti hai?",
+    "answer": "Haan, books issue, return, aur fine calculation hota hai."
+  },
+  {
+    "question": "Kya student ka transport record store hota hai?",
+    "answer": "Haan, bus routes, driver details aur fees ka record rakha jata hai."
+  },
+  {
+    "question": "Kya software ka demo available hai?",
+    "answer": "Ji haan, hum free demo provide karte hain."
+  }
+]
